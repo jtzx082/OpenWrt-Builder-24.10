@@ -112,6 +112,13 @@ jobs:
       - name: Update feeds
         run: cd openwrt && ./scripts/feeds update -a
 
+      - name: Fix luci-app-store version for apk
+        run: |
+          # 强制将 PKG_RELEASE 重置为纯数字，移除可能的非法字符
+          sed -i 's/PKG_RELEASE:=.*/PKG_RELEASE:=1/' package/feeds/istore/luci-app-store/Makefile
+          # 或者如果是因为版本号里有git哈希值等
+          # sed -i 's/PKG_VERSION:=.*/PKG_VERSION:=0.1.32/' package/feeds/istore/luci-app-store/Makefile
+
       - name: Install feeds
         run: cd openwrt && ./scripts/feeds install -a
 
